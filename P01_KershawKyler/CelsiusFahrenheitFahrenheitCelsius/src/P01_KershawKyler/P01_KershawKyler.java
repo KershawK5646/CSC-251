@@ -13,13 +13,9 @@
  * Allow for a user input range of temps
  * Each call in its own method
  * 
+ *  TODO:
+ *  Link both CTF & FTC together in one file and output it.
 */
-
-/**
- * 10/23/19
- * Add file output to write generated temps to a text file.
- * Add user file naming structure so file isn't overwritten.
- */
 
 package P01_KershawKyler;
 // Imports
@@ -46,7 +42,7 @@ public class P01_KershawKyler
            menu();
            userMenuSelection = 0;
            // Loop to validate input
-           while(userMenuSelection >4 || userMenuSelection <=0){
+           while(userMenuSelection >5 || userMenuSelection <=0){
                try{
                     userMenuSelection = Integer.parseInt(kb.nextLine());
                     }
@@ -55,27 +51,29 @@ public class P01_KershawKyler
                     }
            }
            
-           // Run the Celsius to Fahrenheit function.
-           if (userMenuSelection == 1){ 
-               celsiusToFahrenheit();
-               // Ask to run again
-               menuLoop = goAgain();
+           switch(userMenuSelection){
+               case 1:
+                   celsiusToFahrenheit();
+                   // Ask to run again
+                   menuLoop = goAgain();
+                   break;
+               case 2:
+                   fahrenheitToCelsius();
+                   menuLoop = goAgain();
+                   break;
+               case 3:
+                   customChoice();
+                   menuLoop = goAgain();
+                   break;
+               case 4:
+                   doubleFile();
+                   break;
+                   
+               case 5:
+                   System.out.print("Goodbye!");
+                   menuLoop = false;
+                   
            }
-           // Run the Fahrenheit to Celsius Function.
-           else if(userMenuSelection == 2){
-               fahrenheitToCelsius();
-               menuLoop = goAgain();
-           }
-           
-           else if (userMenuSelection == 3){
-               customChoice();
-               menuLoop = goAgain();
-           }
-           else if (userMenuSelection == 4){
-               System.out.print("Goodbye!");
-               menuLoop = false;
-           }
-           
        }
        
       
@@ -89,7 +87,8 @@ public class P01_KershawKyler
        System.out.print("1. Celsius to Fahrenheit\n"
                + "2. Fahrenheit to Celsius\n"
                + "3. Custom Table \n"
-               + "4. Quit. \n");
+               + "4. Freezing to Boiling, Both"
+               + "5. Quit. \n");
    }
    
    
@@ -120,7 +119,7 @@ public class P01_KershawKyler
        }
        else{
            goAgain = false;
-           System.out.print("Goodbye");
+           System.out.print("Goodbye \n");
            return goAgain;
        }
    }
@@ -134,16 +133,18 @@ public class P01_KershawKyler
         double fahrenheit;   // The Fahrenheit temperature
         double celsius;      // The Celsius temperature
         String fileName = "null";
+        String fileData;
         
         // Create a printwriter object and file.
+       fileName = "Celsius to Fahrenheit";
        PrintWriter outFile = new PrintWriter(fileName+".txt");
        
         // Create a DecimalFormat class to format output.
-        DecimalFormat fmt = new DecimalFormat(" 0.0");             
+        DecimalFormat fmt = new DecimalFormat(" 0.0");
         // Display the table headings.
         System.out.println("Celsius\t\tFahrenheit");
         System.out.println("------------------------------");
-
+        fileData = "Celsius\t\tFahrenheit\n------------------------------\n";
         // Display the table.
         for (celsius = 0; celsius <= 100; celsius++)
         {
@@ -151,26 +152,45 @@ public class P01_KershawKyler
             System.out.println(fmt.format(celsius) +
                     "\t\t" + 
                     fmt.format(fahrenheit));
+            fileData = fileData+fmt.format(celsius) + 
+                    "\t\t" + fmt.format(fahrenheit)+"\n";
           }
-        
+        outFile.print(fileData);
         // Close the 
         outFile.close();
     }
    
-   // Fahrenheit to Celsius
-   public static void fahrenheitToCelsius(){
-       /* This function calculates temps from fahrenheit to celsius
-        * from freezing to boiling.
-       */
-       
-        double fahrenheit;   // The Fahrenheit temperature
+   public static void doubleFile() throws IOException{
+       double fahrenheit;   // The Fahrenheit temperature
         double celsius;      // The Celsius temperature
-
+        String fileName;
+        String fileData;
+        
+        // Create a printwriter object and file.
+       fileName = "DoubleFile";
+       PrintWriter outFile = new PrintWriter(fileName+".txt");
+       
         // Create a DecimalFormat class to format output.
-        DecimalFormat fmt = new DecimalFormat(" 0.0");             
+        DecimalFormat fmt = new DecimalFormat(" 0.0");
+        // Display the table headings.
+        System.out.println("Celsius\t\tFahrenheit");
+        System.out.println("------------------------------");
+        fileData = "Celsius\t\tFahrenheit\n------------------------------\n";
+        // Display the table.
+        for (celsius = 0; celsius <= 100; celsius++)
+        {
+            fahrenheit = (9.0 / 5.0) * celsius + 32;
+            System.out.println(fmt.format(celsius) +
+                    "\t\t" + 
+                    fmt.format(fahrenheit));
+            fileData = fileData+fmt.format(celsius) + 
+                    "\t\t" + fmt.format(fahrenheit)+"\n";
+          }          
         // Display the table headings.
         System.out.println("Fahrenheit\t\tCelsius");
         System.out.println("------------------------------");
+        fileData = fileData + "Fahrenheit\t\tCelsius\n"
+                + "------------------------------\n";
 
         // Display the table.
         for (fahrenheit = 32; fahrenheit <= 212; fahrenheit++)
@@ -179,11 +199,55 @@ public class P01_KershawKyler
             System.out.println(fmt.format(fahrenheit) +
                     "\t\t" + 
                     fmt.format(celsius));
+            fileData = fileData + fmt.format(fahrenheit) +
+                    "\t\t" + fmt.format(celsius) + "\n";
           }
+        outFile.print(fileData);
+        // Close the 
+        outFile.close();
+        
+        
+   }
+   
+   // Fahrenheit to Celsius
+   public static void fahrenheitToCelsius()throws IOException{
+       /* This function calculates temps from fahrenheit to celsius
+        * from freezing to boiling.
+       */
+       
+        double fahrenheit;   // The Fahrenheit temperature
+        double celsius;      // The Celsius temperature
+        String fileName = "null";
+        String fileData;
+        
+        // Create a printwriter object and file.
+       fileName = "Fahrenheit to Celsius";
+       PrintWriter outFile = new PrintWriter(fileName+".txt");
+       
+        // Create a DecimalFormat class to format output.
+        DecimalFormat fmt = new DecimalFormat(" 0.0");             
+        // Display the table headings.
+        System.out.println("Fahrenheit\t\tCelsius");
+        System.out.println("------------------------------");
+        fileData = "Fahrenheit\t\tCelsius\n------------------------------\n";
+
+        // Display the table.
+        for (fahrenheit = 32; fahrenheit <= 212; fahrenheit++)
+        {
+            celsius = (fahrenheit - 32)/(9.0/5.0);
+            System.out.println(fmt.format(fahrenheit) +
+                    "\t\t" + 
+                    fmt.format(celsius));
+            fileData = fileData + fmt.format(fahrenheit) +
+                    "\t\t" + fmt.format(celsius) + "\n";
+          }
+        outFile.print(fileData);
+        // Close the 
+        outFile.close();
    }
    
    // Custom choice
-   public static void customChoice(){
+   public static void customChoice()throws IOException{
        // This function calculates temperaturs across a custom range of numbers.
        Integer selection =0;
        
@@ -214,13 +278,19 @@ public class P01_KershawKyler
    }
 
    // Custom CTF calculation
-    private static void customCelsiusToFahrenheit() {
+    private static void customCelsiusToFahrenheit()throws IOException{
         /* This function calculates temps from celsius to fahrenheit
          * Across a custom range.
         */
         Integer userStartRange;
         Integer userEndRange;
-       
+        String fileName = "null";
+        String fileData;
+
+         // Create a printwriter object and file.
+        fileName = getFileNameFromUser();
+        PrintWriter outFile = new PrintWriter(fileName+".txt");
+        
         Scanner kb = new Scanner(System.in);
        
         double fahrenheit;   // The Fahrenheit temperature
@@ -245,6 +315,7 @@ public class P01_KershawKyler
         // Display the table headings.
         System.out.println("Celsius\t\tFahrenheit");
         System.out.println("------------------------------");
+        fileData = "Celsius\t\tFahrenheit\n------------------------------\n";
 
         // Display the table.
         for (celsius = userStartRange; celsius <= userEndRange; celsius++)
@@ -253,17 +324,28 @@ public class P01_KershawKyler
             System.out.println(fmt.format(celsius) +
                     "\t\t" + 
                     fmt.format(fahrenheit));
+            fileData = fileData + fmt.format(celsius) +
+                    "\t\t" + fmt.format(fahrenheit)+"\n";
           }
+        outFile.print(fileData);
+        // Close the 
+        outFile.close();
     }
     
     
     // Custom FTC calculation
-    private static void customFahrenheitToCelsius() {
+    private static void customFahrenheitToCelsius()throws IOException {
         /* This function calculates temps from fahrenheit to celsius
          * Across a custom range.
         */
         Integer userStartRange;
         Integer userEndRange;
+        String fileName = "null";
+        String fileData;
+
+         // Create a printwriter object and file.
+        fileName = getFileNameFromUser();
+        PrintWriter outFile = new PrintWriter(fileName+".txt");
        
         Scanner kb = new Scanner(System.in);
        
@@ -287,6 +369,7 @@ public class P01_KershawKyler
         // Display the table headings.
         System.out.println("Fahrenheit\t\tCelsius");
         System.out.println("------------------------------");
+        fileData = "Fahrenheit\t\tCelsius\n------------------------------\n";
 
         // Display the table.
         for (fahrenheit = userStartRange; fahrenheit <= userEndRange; fahrenheit++)
@@ -295,7 +378,12 @@ public class P01_KershawKyler
             System.out.println(fmt.format(fahrenheit) +
                     "\t\t" + 
                     fmt.format(celsius));
+            fileData = fileData + fmt.format(fahrenheit) +
+                    "\t\t" + fmt.format(celsius)+"\n";
           }
+        outFile.print(fileData);
+        // Close the 
+        outFile.close();
     }
     
     // Get start of custom range
@@ -333,6 +421,15 @@ public class P01_KershawKyler
             
         }
         return userEndRange;
+    }
+    public static String getFileNameFromUser(){
+        String fileName;
+        Scanner kb = new Scanner(System.in);
+        
+        System.out.print("Enter a name for your file: \n");
+        fileName = kb.nextLine();
+        
+        return fileName;
     }
 
 }
