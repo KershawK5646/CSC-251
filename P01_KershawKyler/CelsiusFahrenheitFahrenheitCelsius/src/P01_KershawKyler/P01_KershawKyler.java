@@ -14,16 +14,27 @@
  * Each call in its own method
  * 
 */
+
+/**
+ * 10/23/19
+ * Add file output to write generated temps to a text file.
+ * Add user file naming structure so file isn't overwritten.
+ */
+
 package P01_KershawKyler;
+// Imports
 import java.text.DecimalFormat;
 import java.util.Scanner;
+import java.io.*;
+
+
 public class P01_KershawKyler
 {
-   public static void main(String[] args)
-   {
+   public static void main(String[] args) throws IOException{
        // Needed Variables
        boolean menuLoop = true;
        Integer userMenuSelection = 0;
+       String filename = "null";
        
        // Needed objects
        Scanner kb = new Scanner(System.in);
@@ -109,21 +120,24 @@ public class P01_KershawKyler
        }
        else{
            goAgain = false;
+           System.out.print("Goodbye");
            return goAgain;
        }
-       
-       
    }
    
    // Celsius to Fahrenheit
-   public static void celsiusToFahrenheit(){
+   public static void celsiusToFahrenheit()throws IOException{
        /* This function calculates temps from celsius to fahrenheit
         * from freezing to boiling.
        */
        
         double fahrenheit;   // The Fahrenheit temperature
         double celsius;      // The Celsius temperature
-
+        String fileName = "null";
+        
+        // Create a printwriter object and file.
+       PrintWriter outFile = new PrintWriter(fileName+".txt");
+       
         // Create a DecimalFormat class to format output.
         DecimalFormat fmt = new DecimalFormat(" 0.0");             
         // Display the table headings.
@@ -138,6 +152,9 @@ public class P01_KershawKyler
                     "\t\t" + 
                     fmt.format(fahrenheit));
           }
+        
+        // Close the 
+        outFile.close();
     }
    
    // Fahrenheit to Celsius
