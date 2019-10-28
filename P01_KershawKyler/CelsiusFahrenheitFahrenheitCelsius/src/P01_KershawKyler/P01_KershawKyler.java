@@ -1,7 +1,7 @@
 /**
  * Name: Kyler Kershaw
  * Start:  08/28/2019
- * Finish: 09/09/2019
+ * Finish: 10/24/2019
  */
 
 /**
@@ -12,9 +12,6 @@
  * Convert Celsius to Fahrenheit from freezing to boiling (0, 100)
  * Allow for a user input range of temps
  * Each call in its own method
- * 
- *  TODO:
- *  Link both CTF & FTC together in one file and output it.
 */
 
 package P01_KershawKyler;
@@ -67,6 +64,7 @@ public class P01_KershawKyler
                    break;
                case 4:
                    doubleFile();
+                   menuLoop = goAgain();
                    break;
                    
                case 5:
@@ -87,7 +85,7 @@ public class P01_KershawKyler
        System.out.print("1. Celsius to Fahrenheit\n"
                + "2. Fahrenheit to Celsius\n"
                + "3. Custom Table \n"
-               + "4. Freezing to Boiling, Both"
+               + "4. Freezing to Boiling, Both \n"
                + "5. Quit. \n");
    }
    
@@ -186,6 +184,9 @@ public class P01_KershawKyler
             fileData = fileData+fmt.format(celsius) + 
                     "\t\t" + fmt.format(fahrenheit)+"\n";
           }          
+        System.out.println("==============================");
+        System.out.println("=                            =");
+        System.out.println("==============================");
         // Display the table headings.
         System.out.println("Fahrenheit\t\tCelsius");
         System.out.println("------------------------------");
